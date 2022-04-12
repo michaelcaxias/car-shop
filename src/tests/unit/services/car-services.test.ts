@@ -9,11 +9,11 @@ describe("Car - Camada de Services", () => {
   const carService = new CarService();
   describe("Testes em método create em caso de sucesso", () => {
     before(() => {
-      sinon.stub(carService, "create").resolves(createSucessfullResponse);
+      sinon.stub(carService.model, "create").resolves(createSucessfullResponse);
     });
 
     after(() => {
-      (carService.create as sinon.SinonStub).restore()
+      (carService.model.create as sinon.SinonStub).restore()
       sinon.restore();
     });
 
