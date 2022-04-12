@@ -22,11 +22,14 @@ export default class CarController extends Controller<Car> {
   ) => {
     const { body } = req;
     try {
-      const data = await this.service.create(body);
-      if (!data) {
+      const carData = await this.service.create(body);
+      if (!carData) {
         return res.status(400).json({ error: this.errors.badRequest });
       }
-      return res.status(201).json(data);
+      if ('error' in carData) {
+        return res.status(400).json({ error: this.errors.badRequest });
+      }
+      return res.status(201).json(carData);
     } catch (error) {
       return res.status(500).json({ error: this.errors.internal });
     }
