@@ -35,14 +35,18 @@ export default class CarController extends Controller<Car> {
     }
   };
 
-  // read = async (
-  //   _req: RequestWithBody<Car>,
-  //   res: Response<Car | ResponseError>,
-  // ) => {
-  //   const carData = await this.service.read();
-  //   if (!carData) {
-  //     return res.status(400).json({ error: this.errors.notFound });
-  //   }
-  //   return res.status(200).json(carData);
-  // };
+  read = async (
+    _req: RequestWithBody<Car>,
+    res: Response<Car[] | ResponseError>,
+  ) => {
+    try {
+      const carData = await this.service.read();
+      if (!carData) {
+        return res.status(400).json({ error: this.errors.notFound });
+      }
+      return res.status(200).json(carData);
+    } catch (error) {
+      return res.status(500).json({ error: this.errors.internal });
+    }
+  };
 }
