@@ -16,11 +16,19 @@ export default class CarController extends Controller<Car> {
 
   get route() { return this._route; }
 
-  create = (_req: RequestWithBody<Car>, res: Response<Car | ResponseError>) => {
-    const { status, data } = CarServices.create();
-    if (status >= 400) {
-      return res.status(status).json({ message: data });
+  create = async (
+    req: RequestWithBody<Car>,
+    res: Response<Car | ResponseError>,
+  ) => {
+    const { body } = req;
+    try {
+      const data = await this.service.create(body);
+      if (!data) {
+        return res.status(400).json({ error: this.errors.badRequest });
+      }
+      return res.status(201).json(data);
+    } catch (error) {
+      return res.status(500).json({ error: this.errors.internal });
     }
-    return res.status(200).json(data);
   };
 }
