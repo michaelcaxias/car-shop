@@ -9,7 +9,7 @@ export interface RequestWithBody<T> extends Request {
   body: T;
 }
 
-enum ControllerErrors {
+export enum ControllerErrors {
   internal = 'Internal Server Error',
   notFound = 'Object not found',
   requiredId = 'Id is required',
