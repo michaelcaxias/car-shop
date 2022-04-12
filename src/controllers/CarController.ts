@@ -7,7 +7,7 @@ export default class CarController extends Controller<Car> {
   private _route: string;
 
   constructor(
-    service = new CarServices(),
+    public service = new CarServices(),
     route = '/cars',
   ) {
     super(service);
