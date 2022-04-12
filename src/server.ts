@@ -6,10 +6,10 @@ import { Car } from './interfaces/CarInterface';
 
 const server = new App();
 
-const carServices = new CarController();
-
+const carControllers = new CarController();
 const carRouter = new CustomRouter<Car>();
-carRouter.addRoute(carServices);
+
+carRouter.addRoute(carControllers);
 
 server.addRouter(carRouter.router);
 
