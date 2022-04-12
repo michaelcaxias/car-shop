@@ -18,3 +18,29 @@ export const createSucessfullResponse = {
   doorsQty: 2,
   seatsQty: 2,
 };
+
+export const failedCarPayload = {
+  model: "bmw",
+  year: 2077,
+  color: "blue",
+  status: true,
+  buyValue: 52224,
+  doorsQty: 2,
+  seatsQty: 2,
+};
+
+export const errorMock = {
+  error: {
+    issues: [
+      {
+        code: "too_big",
+        maximum: 2022,
+        type: "number",
+        inclusive: true,
+        message: "Value should be less than or equal to 2022",
+        path: ["year"],
+      },
+    ],
+    name: "ZodError",
+  },
+};

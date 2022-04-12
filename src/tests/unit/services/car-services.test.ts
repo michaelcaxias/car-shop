@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import mongoose from 'mongoose';
 import * as sinon from "sinon";
 import CarService from '../../../services/CarServices';
-import { createSucessfullResponse, sucessfulCarPayload } from '../mocks/car-mocks';
+import { createSucessfullResponse, sucessfulCarPayload, errorMock, failedCarPayload } from '../mocks/car-mocks';
 import { carScheme } from '../../../interfaces/CarInterface';
 
 describe("Car - Camada de Services", () => {
@@ -24,14 +24,16 @@ describe("Car - Camada de Services", () => {
   });
   describe('Testes em método create em casos de falha', () => {
     before(() => {
-      sinon.stub(carScheme, "safeParse").resolves(createSucessfullResponse);
+      sinon.stub(carScheme, "safeParse").resolves(errorMock);
     });
 
     after(() => {
       sinon.restore();
     });
 
-    it("...", async () => {
+    it("Verifica se o retorno do método create é um erro", async () => {
+      const carData = await carService.create(failedCarPayload);
+      expect(carData).to.be.deep.equal(errorMock);
     });
   })
 });
