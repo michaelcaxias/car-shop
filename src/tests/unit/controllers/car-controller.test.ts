@@ -6,35 +6,33 @@ import CarService from "../../../services/CarServices";
 import { Car } from "../../../interfaces/CarInterface";
 import { RequestWithBody } from "../../../controllers";
 import { Response } from "express";
-import { createSucessfullResponse } from "../mocks/car-mocks";
+import { createSucessfullResponse, sucessfulCarPayload } from "../mocks/car-mocks";
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe("Sua descrição", () => {
-  describe("first", () => {
+describe("Car - Camada de Controllers", () => {
+  describe("Testes em casso de sucesso", async () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
-    before(async () => {
-      request.body = {
-        model: "bmw",
-        year: 1994,
-        color: "blue",
-        status: true,
-        buyValue: 52224,
-        doorsQty: 2,
-        seatsQty: 2,
-      };
-
+    response.status = sinon.stub().returns(response);
+    response.json = sinon.stub();
+    before(() => {
+      request.body = sucessfulCarPayload;
       sinon.stub(carControllers.service, "create").resolves(createSucessfullResponse);
     });
 
     after(() => {
+      (carControllers.service.create as sinon.SinonStub).restore()
       sinon.restore();
     });
 
-    it("", async () => {});
+    it("Verifica se o método create está funcionando corretamente", async () => {
+      await carControllers.create(request, response);
+      expect((response.status as sinon.SinonStub).calledWith(201)).to.be.true;
+      expect((response.json as sinon.SinonStub).calledWith(createSucessfullResponse)).to.be.true;
+    });
   });
 });
