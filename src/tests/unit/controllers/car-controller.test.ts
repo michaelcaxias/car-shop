@@ -29,9 +29,15 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método create está funcionando corretamente", async () => {
+    it("Verifica se o método create está retornando o status 201", async () => {
       await carControllers.create(request, response);
       expect((response.status as sinon.SinonStub).calledWith(201)).to.be.true;
+      expect((response.json as sinon.SinonStub).calledWith(createSucessfullResponse)).to.be.true;
+    });
+
+
+    it("Verifica se o método create está retornando o body esperado", async () => {
+      await carControllers.create(request, response);
       expect((response.json as sinon.SinonStub).calledWith(createSucessfullResponse)).to.be.true;
     });
   });
@@ -50,9 +56,12 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método create está funcionando corretamente", async () => {
+    it("Verifica se o método create está retornando o status 400", async () => {
       await carControllers.create(request, response);
       expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
+    });
+    it("Verifica se o método create está retornando 'Bad Request'", async () => {
+      await carControllers.create(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
