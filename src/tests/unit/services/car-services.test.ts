@@ -33,7 +33,7 @@ describe("Car - Camada de Services", () => {
 
     it("Verifica se o retorno do método create é um erro", async () => {
       const carData = await carService.create(failedCarPayload);
-      expect(carData).to.be.deep.equal(errorMock);
+      expect(carData).to.have.property('error');
     });
   })
 });
