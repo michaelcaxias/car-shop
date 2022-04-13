@@ -90,4 +90,22 @@ describe("Car - Camada de Controllers", () => {
   describe("Em caso de FALHA de erro interno no método READONE", () => {
     verifyInternalError({ method: 'readOne'});
   });
+  describe("Em caso de FALHA ao enviar um id inválido no método READONE", () => {
+    before(() => {
+      request.params = { id: '12345' }
+    })
+  
+    it("Verifica se o método READONE está retornando o status 400", async () => {
+      await carControllers.create(request, response);
+      expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
+    });
+  
+  
+    it("Verifica se o método READONE está retornando um erro 'Id must have 24 hexadecimal characters'", async () => {
+      await carControllers.create(request, response);
+      // aqui deveria ser controllerserros.requiredId
+      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
+      console.log((response.json as sinon.SinonStub));
+    });
+  });
 });
