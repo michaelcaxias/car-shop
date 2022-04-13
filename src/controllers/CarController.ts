@@ -56,6 +56,9 @@ export default class CarController extends Controller<Car> {
   ) => {
     const { id } = req.params;
     try {
+      if (!id || id.length < 24) {
+        return res.status(400).json({ error: this.errors.requiredId });
+      }
       const carData = await this.service.readOne(id);
       if (!carData) {
         return res.status(404).json({ error: this.errors.notFound });
