@@ -12,12 +12,13 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe("Car - Camada de Controllers", () => {
+  const carControllers = new CarController();
+  const request = {} as RequestWithBody<Car>;
+  const response = {} as Response;
+  response.status = sinon.stub().returns(response);
+  response.json = sinon.stub();
+
   describe("Em caso de sucesso do método CREATE", () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
     before(() => {
       request.body = sucessfulCarPayload;
       sinon.stub(carControllers.service, "create").resolves(createSucessfullResponse);
@@ -46,11 +47,6 @@ describe("Car - Camada de Controllers", () => {
     })
   });
   describe('Em caso de FALHA ao chegar "undefined" do CREATE', () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
     before(() => {
       sinon.stub(carControllers.service, "create").resolves(undefined);
     });
@@ -70,11 +66,6 @@ describe("Car - Camada de Controllers", () => {
     });
   })
   describe('Em caso de FALHA ao chegar um erro Zod do CREATE', () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
     before(() => {
       sinon.stub(carControllers.service, "create").resolves(errorMock as never);
     });
@@ -94,11 +85,6 @@ describe("Car - Camada de Controllers", () => {
     });
   })
   describe('Em caso de FALHA no caso do service lançar um erro no método CREATE', () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
 
     before(() => sinon.stub(carControllers.service, "create").throws());
 
@@ -117,11 +103,6 @@ describe("Car - Camada de Controllers", () => {
     });
   })
   describe("Em caso de SUCESSO do método READ", () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
 
     before(() => sinon.stub(carControllers.service, "read").resolves(readCars));
 
@@ -142,11 +123,6 @@ describe("Car - Camada de Controllers", () => {
     });
   });
   describe("Em caso de FALHA no caso do service retornar null no método READ", () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
 
     before(() => sinon.stub(carControllers.service, "read").resolves(null as never));
 
@@ -167,11 +143,6 @@ describe("Car - Camada de Controllers", () => {
     });
   });
   describe("Em caso de FALHA no caso do service lançar um erro no método READ", () => {
-    const carControllers = new CarController();
-    const request = {} as RequestWithBody<Car>;
-    const response = {} as Response;
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub();
 
     before(() => sinon.stub(carControllers.service, "read").throws('Um erro ocorreu'))
 
