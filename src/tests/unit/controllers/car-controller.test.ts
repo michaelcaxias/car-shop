@@ -29,6 +29,7 @@ describe("Car - Camada de Controllers", () => {
       expect(route).to.be.equal('/cars')
     })
   });
+
   describe('Em caso de FALHA ao chegar "undefined" do CREATE', () => {
     before(() => {
       sinon.stub(carControllers.service, "create").resolves(undefined);
@@ -48,6 +49,7 @@ describe("Car - Camada de Controllers", () => {
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
+
   describe('Em caso de FALHA ao chegar um erro Zod do CREATE', () => {
     before(() => {
       sinon.stub(carControllers.service, "create").resolves(errorMock as never);
@@ -67,29 +69,37 @@ describe("Car - Camada de Controllers", () => {
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
+
   describe('Em caso de FALHA de erro interno no método CREATE', () => {
     verifyInternalError({ method: 'create'});
   })
+
   describe("Em caso de SUCESSO do método READ", () => {
     verifyResponseSucessfully({ method: 'read', mockResponse: readCars, status: 200 })
   });
+
   describe("Em caso de FALHA no caso do service retornar null no método READ", () => {
     verifyNotFoundError({ method: 'read' })
   });
+
   describe("Em caso de FALHA nde erro interno no método READ", () => {
     verifyInternalError({ method:  'read'});
   });
+
   describe("Em caso de SUCESSO do método READONE", () => {
     verifyResponseSucessfully({
       method: 'readOne', mockResponse: readCars, status: 200, id: '62571c5b062eba865817d0db'
     });
   });
+
   describe("Em caso de FALHA no caso do service retornar null no método READONE", () => {
     verifyNotFoundError({ method: 'readOne'});
   });
+
   describe("Em caso de FALHA de erro interno no método READONE", () => {
     verifyInternalError({ method: 'readOne'});
   });
+
   describe("Em caso de FALHA ao enviar um id inválido no método READONE", () => {
     before(() => {
       request.params = { id: '12345' }
