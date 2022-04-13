@@ -44,3 +44,17 @@ export const errorMock = {
     name: "ZodError",
   },
 };
+
+export const readCars = [
+  {
+    _id: "6255f49b9c3c804d9a067e69",
+    model: "bmw",
+    year: 1994,
+    color: "blue",
+    status: true,
+    buyValue: 52224,
+    doorsQty: 2,
+    seatsQty: 2,
+    __v: 0,
+  },
+];
