@@ -42,7 +42,7 @@ export default class CarController extends Controller<Car> {
     try {
       const carData = await this.service.read();
       if (!carData) {
-        return res.status(400).json({ error: this.errors.notFound });
+        return res.status(404).json({ error: this.errors.notFound });
       }
       return res.status(200).json(carData);
     } catch (error) {

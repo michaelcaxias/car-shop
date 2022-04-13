@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe("Car - Camada de Controllers", () => {
-  describe("Testes em caso de sucesso do método CREATE", () => {
+  describe("Em caso de sucesso do método CREATE", () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -45,7 +45,7 @@ describe("Car - Camada de Controllers", () => {
       expect(route).to.be.equal('/cars')
     })
   });
-  describe('Testes em caso de falha ao chegar "undefined" do create', () => {
+  describe('Em caso de falha ao chegar "undefined" do create', () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -69,7 +69,7 @@ describe("Car - Camada de Controllers", () => {
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
-  describe('Testes em caso de falha ao chegar um erro Zod do create', () => {
+  describe('Em caso de falha ao chegar um erro Zod do create', () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -93,7 +93,30 @@ describe("Car - Camada de Controllers", () => {
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
-  describe("Testes em caso de sucesso do método READ", () => {
+  describe('Em caso de falha no caso do service lançar um erro no método CREATE', () => {
+    const carControllers = new CarController();
+    const request = {} as RequestWithBody<Car>;
+    const response = {} as Response;
+    response.status = sinon.stub().returns(response);
+    response.json = sinon.stub();
+
+    before(() => sinon.stub(carControllers.service, "create").throws());
+
+    after(() => {
+      (carControllers.service.create as sinon.SinonStub).restore()
+      sinon.restore();
+    });
+
+    it("Verifica se o método create está retornando o status 500", async () => {
+      await carControllers.create(request, response);
+      expect((response.status as sinon.SinonStub).calledWith(500)).to.be.true;
+    });
+    it("Verifica se o método create está retornando um erro interno", async () => {
+      await carControllers.create(request, response);
+      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.internal })).to.be.true;
+    });
+  })
+  describe("Em caso de sucesso do método READ", () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -116,6 +139,56 @@ describe("Car - Camada de Controllers", () => {
     it("Verifica se o método read() está retornando o body esperado", async () => {
       await carControllers.read(request, response);
       expect((response.json as sinon.SinonStub).calledWith(readCars)).to.be.true;
+    });
+  });
+  describe("Em caso de FALHA no caso do service retornar null no método READ", () => {
+    const carControllers = new CarController();
+    const request = {} as RequestWithBody<Car>;
+    const response = {} as Response;
+    response.status = sinon.stub().returns(response);
+    response.json = sinon.stub();
+
+    before(() => sinon.stub(carControllers.service, "read").resolves(null as never));
+
+    after(() => {
+      (carControllers.service.read as sinon.SinonStub).restore()
+      sinon.restore();
+    });
+
+    it("Verifica se o método read() está retornando o status 404", async () => {
+      await carControllers.read(request, response);
+      expect((response.status as sinon.SinonStub).calledWith(404)).to.be.true;
+    });
+
+
+    it("Verifica se o método read() está retornando o body esperado", async () => {
+      await carControllers.read(request, response);
+      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.notFound })).to.be.true;
+    });
+  });
+  describe("Em caso de FALHA no caso do service lançar um erro no método READ", () => {
+    const carControllers = new CarController();
+    const request = {} as RequestWithBody<Car>;
+    const response = {} as Response;
+    response.status = sinon.stub().returns(response);
+    response.json = sinon.stub();
+
+    before(() => sinon.stub(carControllers.service, "read").throws('Um erro ocorreu'))
+
+    after(() => {
+      (carControllers.service.read as sinon.SinonStub).restore()
+      sinon.restore();
+    });
+
+    it("Verifica se o método read() está retornando o status 500", async () => {
+      await carControllers.read(request, response);
+      expect((response.status as sinon.SinonStub).calledWith(500)).to.be.true;
+    });
+
+
+    it("Verifica se o método read() está retornando um erro interno", async () => {
+      await carControllers.read(request, response);
+      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.internal })).to.be.true;
     });
   });
 });
