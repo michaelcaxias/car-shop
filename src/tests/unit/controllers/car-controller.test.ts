@@ -6,7 +6,7 @@ import { Car } from "../../../interfaces/CarInterface";
 import { ControllerErrors, RequestWithBody } from "../../../controllers";
 import { Response } from "express";
 import { createSucessfullResponse, errorMock, readCars, sucessfulCarPayload } from "../mocks/car-mocks";
-import { verifyInternalError, verifyResponseSucessfully } from '../utils/index';
+import { verifyInternalError, verifyResponseSucessfully, verifyNotFoundError } from '../utils/index';
 
 chai.use(chaiHttp);
 
@@ -91,24 +91,7 @@ describe("Car - Camada de Controllers", () => {
     verifyResponseSucessfully({ method: 'read', mockResponse: readCars, status: 200 })
   });
   describe("Em caso de FALHA no caso do service retornar null no método READ", () => {
-
-    before(() => sinon.stub(carControllers.service, "read").resolves(null as never));
-
-    after(() => {
-      (carControllers.service.read as sinon.SinonStub).restore()
-      sinon.restore();
-    });
-
-    it("Verifica se o método READ está retornando o status 404", async () => {
-      await carControllers.read(request, response);
-      expect((response.status as sinon.SinonStub).calledWith(404)).to.be.true;
-    });
-
-
-    it("Verifica se o método READ está retornando o body esperado", async () => {
-      await carControllers.read(request, response);
-      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.notFound })).to.be.true;
-    });
+    verifyNotFoundError({ method: 'read' })
   });
   describe("Em caso de FALHA nde erro interno no método READ", () => {
     verifyInternalError({ method:  'read'});

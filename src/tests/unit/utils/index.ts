@@ -10,9 +10,10 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 type Methods = 'read' | 'readOne' | 'create';
-type sucessfullyObject = { method: Methods, mockResponse: any, status: number }
+type sucessfullyObject = { method: Methods, mockResponse: any, status: number };
+type MethodsObject = { method: Methods };
 
-export const verifyInternalError = ({ method }: { method: Methods }) => {
+export const verifyInternalError = ({ method }: MethodsObject) => {
   const carControllers = new CarController();
   const request = {} as Request;
   const response = {} as Response;
@@ -62,5 +63,31 @@ export const verifyResponseSucessfully = ({ method, mockResponse, status }: suce
   it(`Verifica se o método ${method} está retornando o body esperado`, async () => {
     await carControllers[method](request, response);
     expect((response.json as sinon.SinonStub).calledWith(mockResponse)).to.be.true;
+  });
+}
+
+export const verifyNotFoundError = ({ method }: MethodsObject) => {
+  const carControllers = new CarController();
+  const request = {} as RequestWithBody<Car>;
+  const response = {} as Response;
+  response.status = sinon.stub().returns(response);
+  response.json = sinon.stub();
+
+  before(() => sinon.stub(carControllers.service, method).resolves(null as never));
+
+  after(() => {
+    (carControllers.service[method] as sinon.SinonStub).restore()
+    sinon.restore();
+  });
+
+  it("Verifica se o método READ está retornando o status 404", async () => {
+    await carControllers[method](request, response);
+    expect((response.status as sinon.SinonStub).calledWith(404)).to.be.true;
+  });
+
+
+  it("Verifica se o método READ está retornando o body esperado", async () => {
+    await carControllers[method](request, response);
+    expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.notFound })).to.be.true;
   });
 }
