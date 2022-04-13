@@ -33,9 +33,9 @@ abstract class Controller<T> {
     res: Response<T[] | ResponseError>,
   ): Promise<typeof res>;
 
-  // abstract readOne(
-  //   req: Request<{ id: string; }>,
-  //   res: Response<T | ResponseError>
-  // ): Promise<typeof res>;
+  abstract readOne(
+    req: Request<{ id: string; }>,
+    res: Response<T | ResponseError>
+  ): Promise<typeof res>;
 }
 export default Controller;
