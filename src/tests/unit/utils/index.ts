@@ -17,7 +17,7 @@ export const verifyInternalError = ({ method }: MethodsObject) => {
   const carControllers = new CarController();
   const request = {} as Request;
   const response = {} as Response;
-  if (method === 'readOne') { request.params = { id: '123456' } }
+  if (method === 'readOne') { request.params = { id: '62571c5b062eba865817d0db' } }
   response.status = sinon.stub().returns(response);
   response.json = sinon.stub();
 
@@ -72,7 +72,7 @@ export const verifyNotFoundError = ({ method }: MethodsObject) => {
   const carControllers = new CarController();
   const request = {} as RequestWithBody<Car>;
   const response = {} as Response;
-  if (method === 'readOne') { request.params = { id: '123456' } }
+  if (method === 'readOne') { request.params = { id: '62571c5b062eba865817d0db' } }
   response.status = sinon.stub().returns(response);
   response.json = sinon.stub();
 
