@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import mongoose from 'mongoose';
 import * as sinon from "sinon";
 import CarService from '../../../services/CarServices';
 import { createSucessfullResponse, sucessfulCarPayload, errorMock, failedCarPayload } from '../mocks/car-mocks';
@@ -7,7 +6,7 @@ import { carScheme } from '../../../interfaces/CarInterface';
 
 describe("Car - Camada de Services", () => {
   const carService = new CarService();
-  describe("Testes em método create em caso de sucesso", () => {
+  describe("Em método CREATE em caso de SUCESSO", () => {
     before(() => {
       sinon.stub(carService.model, "create").resolves(createSucessfullResponse);
     });
@@ -22,7 +21,7 @@ describe("Car - Camada de Services", () => {
       expect(carData).to.be.deep.equal(createSucessfullResponse);
     });
   });
-  describe('Testes em método create em casos de falha', () => {
+  describe('Em método CREATE em casos de FALHA', () => {
     before(() => {
       sinon.stub(carScheme, "safeParse").resolves(errorMock);
     });
@@ -31,7 +30,7 @@ describe("Car - Camada de Services", () => {
       sinon.restore();
     });
 
-    it("Verifica se o retorno do método create é um erro", async () => {
+    it("Verifica se o retorno do método CREATE é um erro", async () => {
       const carData = await carService.create(failedCarPayload);
       expect(carData).to.have.property('error');
     });

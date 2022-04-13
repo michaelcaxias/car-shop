@@ -28,14 +28,14 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método create está retornando o status 201", async () => {
+    it("Verifica se o método CREATE está retornando o status 201", async () => {
       await carControllers.create(request, response);
       expect((response.status as sinon.SinonStub).calledWith(201)).to.be.true;
       expect((response.json as sinon.SinonStub).calledWith(createSucessfullResponse)).to.be.true;
     });
 
 
-    it("Verifica se o método create está retornando o body esperado", async () => {
+    it("Verifica se o método CREATE está retornando o body esperado", async () => {
       await carControllers.create(request, response);
       expect((response.json as sinon.SinonStub).calledWith(createSucessfullResponse)).to.be.true;
     });
@@ -45,7 +45,7 @@ describe("Car - Camada de Controllers", () => {
       expect(route).to.be.equal('/cars')
     })
   });
-  describe('Em caso de falha ao chegar "undefined" do create', () => {
+  describe('Em caso de FALHA ao chegar "undefined" do CREATE', () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -60,16 +60,16 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método create está retornando o status 400", async () => {
+    it("Verifica se o método CREATE está retornando o status 400", async () => {
       await carControllers.create(request, response);
       expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
     });
-    it("Verifica se o método create está retornando 'Bad Request'", async () => {
+    it("Verifica se o método CREATE está retornando 'Bad Request'", async () => {
       await carControllers.create(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
-  describe('Em caso de falha ao chegar um erro Zod do create', () => {
+  describe('Em caso de FALHA ao chegar um erro Zod do CREATE', () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -84,16 +84,16 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método create está retornando o status 400", async () => {
+    it("Verifica se o método CREATE está retornando o status 400", async () => {
       await carControllers.create(request, response);
       expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
     });
-    it("Verifica se o método create está retornando 'Bad Request'", async () => {
+    it("Verifica se o método CREATE está retornando 'Bad Request'", async () => {
       await carControllers.create(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.badRequest })).to.be.true;
     });
   })
-  describe('Em caso de falha no caso do service lançar um erro no método CREATE', () => {
+  describe('Em caso de FALHA no caso do service lançar um erro no método CREATE', () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -107,16 +107,16 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método create está retornando o status 500", async () => {
+    it("Verifica se o método CREATE está retornando o status 500", async () => {
       await carControllers.create(request, response);
       expect((response.status as sinon.SinonStub).calledWith(500)).to.be.true;
     });
-    it("Verifica se o método create está retornando um erro interno", async () => {
+    it("Verifica se o método CREATE está retornando um erro interno", async () => {
       await carControllers.create(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.internal })).to.be.true;
     });
   })
-  describe("Em caso de sucesso do método READ", () => {
+  describe("Em caso de SUCESSO do método READ", () => {
     const carControllers = new CarController();
     const request = {} as RequestWithBody<Car>;
     const response = {} as Response;
@@ -130,13 +130,13 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método read() está retornando o status 200", async () => {
+    it("Verifica se o método READ está retornando o status 200", async () => {
       await carControllers.read(request, response);
       expect((response.status as sinon.SinonStub).calledWith(200)).to.be.true;
     });
 
 
-    it("Verifica se o método read() está retornando o body esperado", async () => {
+    it("Verifica se o método READ está retornando o body esperado", async () => {
       await carControllers.read(request, response);
       expect((response.json as sinon.SinonStub).calledWith(readCars)).to.be.true;
     });
@@ -155,13 +155,13 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método read() está retornando o status 404", async () => {
+    it("Verifica se o método READ está retornando o status 404", async () => {
       await carControllers.read(request, response);
       expect((response.status as sinon.SinonStub).calledWith(404)).to.be.true;
     });
 
 
-    it("Verifica se o método read() está retornando o body esperado", async () => {
+    it("Verifica se o método READ está retornando o body esperado", async () => {
       await carControllers.read(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.notFound })).to.be.true;
     });
@@ -180,13 +180,13 @@ describe("Car - Camada de Controllers", () => {
       sinon.restore();
     });
 
-    it("Verifica se o método read() está retornando o status 500", async () => {
+    it("Verifica se o método READ está retornando o status 500", async () => {
       await carControllers.read(request, response);
       expect((response.status as sinon.SinonStub).calledWith(500)).to.be.true;
     });
 
 
-    it("Verifica se o método read() está retornando um erro interno", async () => {
+    it("Verifica se o método READ está retornando um erro interno", async () => {
       await carControllers.read(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.internal })).to.be.true;
     });
