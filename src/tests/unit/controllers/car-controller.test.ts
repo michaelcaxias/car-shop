@@ -20,25 +20,8 @@ describe("Car - Camada de Controllers", () => {
   response.json = sinon.stub();
 
   describe("Em caso de sucesso do método CREATE", () => {
-    before(() => {
-      request.body = sucessfulCarPayload;
-      sinon.stub(carControllers.service, "create").resolves(createSucessfullResponse);
-    });
-
-    after(() => {
-      (carControllers.service.create as sinon.SinonStub).restore()
-      sinon.restore();
-    });
-
-    it("Verifica se o método CREATE está retornando o status 201", async () => {
-      await carControllers.create(request, response);
-      expect((response.status as sinon.SinonStub).calledWith(201)).to.be.true;
-    });
-
-
-    it("Verifica se o método CREATE está retornando o body esperado", async () => {
-      await carControllers.create(request, response);
-      expect((response.json as sinon.SinonStub).calledWith(createSucessfullResponse)).to.be.true;
+    verifyResponseSucessfully({
+      method: 'create', mockResponse: createSucessfullResponse, status: 201, body: sucessfulCarPayload
     });
 
     it("Verifica se a rota é /cars", () => {
