@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 type Methods = 'read' | 'readOne' | 'create';
-type sucessfullyObject = { method: Methods, mockResponse: any, status: number };
+type sucessfullyObject = { method: Methods, mockResponse: any, status: number, id?: string};
 type MethodsObject = { method: Methods };
 
 export const verifyInternalError = ({ method }: MethodsObject) => {
@@ -40,10 +40,11 @@ export const verifyInternalError = ({ method }: MethodsObject) => {
   });
 }
 
-export const verifyResponseSucessfully = ({ method, mockResponse, status }: sucessfullyObject) => {
+export const verifyResponseSucessfully = ({ method, mockResponse, status, id = '0' }: sucessfullyObject) => {
   const carControllers = new CarController();
   const request = {} as RequestWithBody<Car>;
   const response = {} as Response;
+  if (method === 'readOne') { request.params = { id } }
   response.status = sinon.stub().returns(response);
   response.json = sinon.stub();
 
@@ -70,6 +71,7 @@ export const verifyNotFoundError = ({ method }: MethodsObject) => {
   const carControllers = new CarController();
   const request = {} as RequestWithBody<Car>;
   const response = {} as Response;
+  if (method === 'readOne') { request.params = { id: '123456' } }
   response.status = sinon.stub().returns(response);
   response.json = sinon.stub();
 

@@ -96,6 +96,14 @@ describe("Car - Camada de Controllers", () => {
   describe("Em caso de FALHA nde erro interno no método READ", () => {
     verifyInternalError({ method:  'read'});
   });
+  describe("Em caso de SUCESSO do método READONE", () => {
+    verifyResponseSucessfully({
+      method: 'readOne', mockResponse: readCars, status: 200, id: '62571c5b062eba865817d0db'
+    });
+  });
+  describe("Em caso de FALHA no caso do service retornar null no método READONE", () => {
+    verifyNotFoundError({ method: 'readOne'});
+  });
   describe("Em caso de FALHA de erro interno no método READONE", () => {
     verifyInternalError({ method: 'readOne'});
   });
