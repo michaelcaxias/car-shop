@@ -14,6 +14,7 @@ describe("Car - Camada de Services", () => {
       body: sucessfulCarPayload,
     })
   });
+
   describe('Em método CREATE em casos de FALHA', () => {
     before(() => {
       sinon.stub(carScheme, "safeParse").resolves(errorMock);

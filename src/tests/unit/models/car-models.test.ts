@@ -59,7 +59,7 @@ describe('Car - Camada de Models', () => {
 
   describe('Em caso de sucesso do método UPDATE', () => {
     before(() => {
-      sinon.stub(mongoose.Model, "findOneAndUpdate").resolves(readCars[0])
+      sinon.stub(mongoose.Model, "findOneAndUpdate").resolves(sucessfulCarPayload)
     })
 
     after(() => {
@@ -68,7 +68,22 @@ describe('Car - Camada de Models', () => {
 
     it("Verifica se o método UPDATE retorna o que era esperado", async () => {
       const response = await carModel.update('6255f49b9c3c804d9a067e69', sucessfulCarPayload);
-      expect(response).to.deep.equal(readCars)
+      expect(response).to.deep.equal(createSucessfullResponse)
+    })
+  })
+
+  describe('Em caso de sucesso do método DELETE', () => {
+    before(() => {
+      sinon.stub(mongoose.Model, "findOneAndDelete").resolves('')
+    })
+
+    after(() => {
+      sinon.restore();
+    })
+
+    it("Verifica se o método DELETE retorna o que era esperado", async () => {
+      const response = await carModel.delete('6255f49b9c3c804d9a067e69');
+      expect(response).to.deep.equal('')
     })
   })
 })
