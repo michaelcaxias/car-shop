@@ -55,6 +55,5 @@ export const readCars = [
     buyValue: 52224,
     doorsQty: 2,
     seatsQty: 2,
-    __v: 0,
   },
 ];
