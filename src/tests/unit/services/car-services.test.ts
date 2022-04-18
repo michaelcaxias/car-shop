@@ -35,4 +35,35 @@ describe("Car - Camada de Services", () => {
       expect(carData).to.have.property('error');
     });
   })
+
+  describe("Em método UPDATE em caso de SUCESSO", () => {
+    before(() => {
+      sinon.stub(carService.model, "update").resolves(createSucessfullResponse);
+    });
+
+    after(() => {
+      (carService.model.update as sinon.SinonStub).restore()
+      sinon.restore();
+    });
+
+    it("Verifica se o retorno do método create está com o payload correto", async () => {
+      const carData = await carService.update('625db3421a8051968670e2ca', sucessfulCarPayload);
+      expect(carData).to.be.deep.equal(createSucessfullResponse);
+    });
+  });
+
+  describe('Em método UPDATE em casos de FALHA', () => {
+    before(() => {
+      sinon.stub(carScheme, "safeParse").resolves(errorMock);
+    });
+
+    after(() => {
+      sinon.restore();
+    });
+
+    it("Verifica se o retorno do método UPDATE é um erro", async () => {
+      const carData = await carService.update('625db3421a8051968670e2ca', failedCarPayload);
+      expect(carData).to.have.property('error');
+    });
+  })
 });
