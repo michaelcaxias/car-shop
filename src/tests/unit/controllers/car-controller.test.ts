@@ -120,4 +120,12 @@ describe("Car - Camada de Controllers", () => {
   describe("Em caso de SUCESSO do método UPDATE", () => {
     verifyResponseSucessfully({ method: 'update', mockResponse: readCars, status: 200 })
   });
+
+  describe("Em caso de FALHA no caso do service retornar null no método UPDATE", () => {
+    verifyNotFoundError({ method: 'update'});
+  });
+
+  describe("Em caso de FALHA de erro interno no método UPDATE", () => {
+    verifyInternalError({ method: 'update'});
+  });
 });
