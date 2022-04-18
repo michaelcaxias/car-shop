@@ -53,6 +53,13 @@ describe("Car - Camada de Services", () => {
     });
   })
 
+  describe("Em método READ em caso de SUCESSO", () => {
+    verifyServiceSucessfully({
+      method: 'read',
+      mockResponse: readCars,
+    })
+  });
+
   describe("Em método READONE em caso de SUCESSO", () => {
     verifyServiceSucessfully({
       method: 'readOne',
