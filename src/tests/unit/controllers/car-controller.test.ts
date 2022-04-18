@@ -116,4 +116,8 @@ describe("Car - Camada de Controllers", () => {
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
     });
   });
+
+  describe("Em caso de SUCESSO do método UPDATE", () => {
+    verifyResponseSucessfully({ method: 'update', mockResponse: readCars, status: 200 })
+  });
 });

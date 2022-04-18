@@ -9,7 +9,7 @@ import { Response, Request } from "express";
 chai.use(chaiHttp);
 const { expect } = chai;
 
-type Methods = 'read' | 'readOne' | 'create';
+type Methods = 'read' | 'readOne' | 'create' | 'update';
 type sucessfullyObject = { method: Methods, mockResponse: any, status: number, id?: string, body?: any};
 type MethodsObject = { method: Methods };
 
