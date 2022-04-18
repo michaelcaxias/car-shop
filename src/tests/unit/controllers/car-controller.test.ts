@@ -6,7 +6,7 @@ import { Car } from "../../../interfaces/CarInterface";
 import { ControllerErrors, RequestWithBody } from "../../../controllers";
 import { Response } from "express";
 import { createSucessfullResponse, errorMock, readCars, sucessfulCarPayload } from "../mocks/car-mocks";
-import { verifyInternalError, verifyResponseSucessfully, verifyNotFoundError } from '../utils/index';
+import { verifyInternalError, verifyResponseSucessfully, verifyNotFoundError, verifyRequiredId } from '../utils/index';
 
 chai.use(chaiHttp);
 
@@ -101,20 +101,7 @@ describe("Car - Camada de Controllers", () => {
   });
 
   describe("Em caso de FALHA ao enviar um id inválido no método READONE", () => {
-    before(() => {
-      request.params = { id: '1' }
-    })
-  
-    it("Verifica se o método READONE está retornando o status 400", async () => {
-      await carControllers.readOne(request, response);
-      expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
-    });
-  
-  
-    it("Verifica se o método READONE está retornando um erro 'Id must have 24 hexadecimal characters'", async () => {
-      await carControllers.readOne(request, response);
-      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
-    });
+    verifyRequiredId({ method: 'readOne' })
   });
 
   describe("Em caso de SUCESSO do método UPDATE", () => {
@@ -124,20 +111,8 @@ describe("Car - Camada de Controllers", () => {
   });
 
   describe("Em caso de FALHA ao enviar um id inválido no método UPDATE", () => {
-    before(() => {
-      request.params = { id: '1' }
-    })
-  
-    it("Verifica se o método UPDATE está retornando o status 400", async () => {
-      await carControllers.update(request, response);
-      expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
-    });
-  
-  
-    it("Verifica se o método UPDATE está retornando um erro 'Id must have 24 hexadecimal characters'", async () => {
-      await carControllers.update(request, response);
-      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
-    });
+    verifyRequiredId({ method: 'update' })
+
   });
 
   describe("Em caso de FALHA no caso do service retornar null no método UPDATE", () => {
@@ -149,20 +124,7 @@ describe("Car - Camada de Controllers", () => {
   });
 
   describe("Em caso de FALHA ao enviar um id inválido no método DELETE", () => {
-    before(() => {
-      request.params = { id: '1' }
-    })
-  
-    it("Verifica se o método DELETE está retornando o status 400", async () => {
-      await carControllers.delete(request, response);
-      expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
-    });
-  
-  
-    it("Verifica se o método DELETE está retornando um erro 'Id must have 24 hexadecimal characters'", async () => {
-      await carControllers.delete(request, response);
-      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
-    });
+    verifyRequiredId({ method: 'delete' })
   });
 
   describe("Em caso de SUCESSO do método DELETE", () => {

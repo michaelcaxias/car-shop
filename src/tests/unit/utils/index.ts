@@ -99,3 +99,27 @@ export const verifyNotFoundError = ({ method }: MethodsObject) => {
     expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.notFound })).to.be.true;
   });
 }
+
+export const verifyRequiredId = ({ method }: MethodsObject) => {
+  const carControllers = new CarController();
+  const request = {} as RequestWithBody<Car>;
+  const response = {} as Response;
+
+  response.status = sinon.stub().returns(response);
+  response.json = sinon.stub();
+
+  before(() => {
+    request.params = { id: '1' }
+  })
+
+  it(`Verifica se o método ${method.toUpperCase()} está retornando o status 400`, async () => {
+    await carControllers[method](request, response);
+    expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
+  });
+
+
+  it(`Verifica se o método ${method.toUpperCase()} está retornando um erro 'Id must have 24 hexadecimal characters'`, async () => {
+    await carControllers[method](request, response);
+    expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
+  });
+}
