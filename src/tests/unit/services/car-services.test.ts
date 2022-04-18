@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from "sinon";
 import CarService from '../../../services/CarServices';
-import { createSucessfullResponse, sucessfulCarPayload, errorMock, failedCarPayload } from '../mocks/car-mocks';
+import { createSucessfullResponse, sucessfulCarPayload, errorMock, failedCarPayload, readCars } from '../mocks/car-mocks';
 import { carScheme } from '../../../interfaces/CarInterface';
 import { verifyServiceSucessfully } from '../utils/index';
 
@@ -52,4 +52,12 @@ describe("Car - Camada de Services", () => {
       expect(carData).to.have.property('error');
     });
   })
+
+  describe("Em método READONE em caso de SUCESSO", () => {
+    verifyServiceSucessfully({
+      method: 'readOne',
+      mockResponse: readCars[0],
+      id: '6255f49b9c3c804d9a067e69',
+    })
+  });
 });
