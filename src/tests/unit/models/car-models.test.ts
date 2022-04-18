@@ -3,6 +3,7 @@ import CarModel from '../../../models/CarModel';
 import chai from "chai";
 import chaiHttp = require("chai-http");
 import { createSucessfullResponse, sucessfulCarPayload, readCars } from '../mocks/car-mocks';
+import mongoose from 'mongoose';
 
 chai.use(chaiHttp);
 
@@ -12,7 +13,7 @@ describe('Car - Camada de Models', () => {
   const carModel = new CarModel();
   describe('Em caso de sucesso do método CREATE', () => {
     before(() => {
-      sinon.stub(carModel, "create").resolves(createSucessfullResponse)
+      sinon.stub(mongoose.Model, "create").resolves(createSucessfullResponse)
     })
 
     after(() => {
@@ -27,7 +28,7 @@ describe('Car - Camada de Models', () => {
 
   describe('Em caso de sucesso do método READ', () => {
     before(() => {
-      sinon.stub(carModel, "read").resolves(readCars)
+      sinon.stub(mongoose.Model, "find").resolves(readCars)
     })
 
     after(() => {
@@ -43,7 +44,7 @@ describe('Car - Camada de Models', () => {
   
   describe('Em caso de sucesso do método READONE', () => {
     before(() => {
-      sinon.stub(carModel, "readOne").resolves(readCars[0])
+      sinon.stub(mongoose.Model, "findOne").resolves(readCars[0])
     })
 
     after(() => {
