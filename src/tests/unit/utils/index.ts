@@ -5,12 +5,13 @@ import CarController from "../../../controllers/CarController";
 import { Car } from "../../../interfaces/CarInterface";
 import { ControllerErrors, RequestWithBody } from "../../../controllers";
 import { Response, Request } from "express";
+import CarService from '../../../services/CarServices';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 
 type Methods = 'read' | 'readOne' | 'create' | 'update' | 'delete';
-type sucessfullyObject = { method: Methods, mockResponse: any, status: number, id?: string, body?: any};
+type sucessfullyObject = { method: Methods, mockResponse: any, status?: number, id?: string, body?: any};
 type MethodsObject = { method: Methods };
 
 export const verifyInternalError = ({ method }: MethodsObject) => {
@@ -121,5 +122,33 @@ export const verifyRequiredId = ({ method }: MethodsObject) => {
   it(`Verifica se o método ${method.toUpperCase()} está retornando um erro 'Id must have 24 hexadecimal characters'`, async () => {
     await carControllers[method](request, response);
     expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
+  });
+}
+
+export const verifyServiceSucessfully = ({ method, mockResponse, id = '0', body }: sucessfullyObject) => {
+  const carService = new CarService();
+
+  before(() => {
+    sinon.stub(carService.model, method).resolves(mockResponse);
+  });
+
+  after(() => {
+    (carService.model[method] as sinon.SinonStub).restore()
+    sinon.restore();
+  });
+
+  it(`Verifica se o retorno do método ${method.toUpperCase()} está com o payload correto`, async () => {
+    if (method === 'update') {
+      const carData = await carService[method](id, body);
+      expect(carData).to.be.deep.equal(mockResponse);
+    }
+    if (method === 'readOne' || method === 'delete') {
+      const carData = await carService[method](id);
+      expect(carData).to.be.deep.equal(mockResponse);
+    }
+    if (method === 'create' || method === 'read') {
+      const carData = await carService[method](body);
+      expect(carData).to.be.deep.equal(mockResponse);
+    }
   });
 }

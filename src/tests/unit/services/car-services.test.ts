@@ -3,23 +3,16 @@ import * as sinon from "sinon";
 import CarService from '../../../services/CarServices';
 import { createSucessfullResponse, sucessfulCarPayload, errorMock, failedCarPayload } from '../mocks/car-mocks';
 import { carScheme } from '../../../interfaces/CarInterface';
+import { verifyServiceSucessfully } from '../utils/index';
 
 describe("Car - Camada de Services", () => {
   const carService = new CarService();
   describe("Em método CREATE em caso de SUCESSO", () => {
-    before(() => {
-      sinon.stub(carService.model, "create").resolves(createSucessfullResponse);
-    });
-
-    after(() => {
-      (carService.model.create as sinon.SinonStub).restore()
-      sinon.restore();
-    });
-
-    it("Verifica se o retorno do método create está com o payload correto", async () => {
-      const carData = await carService.create(sucessfulCarPayload);
-      expect(carData).to.be.deep.equal(createSucessfullResponse);
-    });
+    verifyServiceSucessfully({
+      method: 'create',
+      mockResponse: createSucessfullResponse,
+      body: sucessfulCarPayload,
+    })
   });
   describe('Em método CREATE em casos de FALHA', () => {
     before(() => {
@@ -37,19 +30,12 @@ describe("Car - Camada de Services", () => {
   })
 
   describe("Em método UPDATE em caso de SUCESSO", () => {
-    before(() => {
-      sinon.stub(carService.model, "update").resolves(createSucessfullResponse);
-    });
-
-    after(() => {
-      (carService.model.update as sinon.SinonStub).restore()
-      sinon.restore();
-    });
-
-    it("Verifica se o retorno do método create está com o payload correto", async () => {
-      const carData = await carService.update('625db3421a8051968670e2ca', sucessfulCarPayload);
-      expect(carData).to.be.deep.equal(createSucessfullResponse);
-    });
+    verifyServiceSucessfully({
+      method: 'update',
+      mockResponse: createSucessfullResponse,
+      body: sucessfulCarPayload,
+      id: '625db3421a8051968670e2ca',
+    })
   });
 
   describe('Em método UPDATE em casos de FALHA', () => {
