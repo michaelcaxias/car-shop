@@ -39,6 +39,7 @@ describe("Car - Camada de Services", () => {
   });
 
   describe('Em método UPDATE em casos de FALHA', () => {
+    
     before(() => {
       sinon.stub(carScheme, "safeParse").resolves(errorMock);
     });
@@ -64,6 +65,14 @@ describe("Car - Camada de Services", () => {
     verifyServiceSucessfully({
       method: 'readOne',
       mockResponse: readCars[0],
+      id: '6255f49b9c3c804d9a067e69',
+    })
+  });
+
+  describe("Em método DELETE em caso de SUCESSO", () => {
+    verifyServiceSucessfully({
+      method: 'delete',
+      mockResponse: {},
       id: '6255f49b9c3c804d9a067e69',
     })
   });
