@@ -147,4 +147,35 @@ describe("Car - Camada de Controllers", () => {
   describe("Em caso de FALHA de erro interno no método UPDATE", () => {
     verifyInternalError({ method: 'update'});
   });
+
+  describe("Em caso de FALHA ao enviar um id inválido no método DELETE", () => {
+    before(() => {
+      request.params = { id: '1' }
+    })
+  
+    it("Verifica se o método DELETE está retornando o status 400", async () => {
+      await carControllers.update(request, response);
+      expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
+    });
+  
+  
+    it("Verifica se o método DELETE está retornando um erro 'Id must have 24 hexadecimal characters'", async () => {
+      await carControllers.update(request, response);
+      expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
+    });
+  });
+
+  describe("Em caso de SUCESSO do método DELETE", () => {
+    verifyResponseSucessfully({
+      method: 'delete', mockResponse: {}, status: 204, id: '62571c5b062eba865817d0db'
+    })
+  });
+
+  describe("Em caso de FALHA no caso do service retornar null no método DELETE", () => {
+    verifyNotFoundError({ method: 'delete'});
+  });
+
+  describe("Em caso de FALHA de erro interno no método DELETE", () => {
+    verifyInternalError({ method: 'delete'});
+  });
 });

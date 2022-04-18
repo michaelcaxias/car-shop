@@ -9,7 +9,7 @@ import { Response, Request } from "express";
 chai.use(chaiHttp);
 const { expect } = chai;
 
-type Methods = 'read' | 'readOne' | 'create' | 'update';
+type Methods = 'read' | 'readOne' | 'create' | 'update' | 'delete';
 type sucessfullyObject = { method: Methods, mockResponse: any, status: number, id?: string, body?: any};
 type MethodsObject = { method: Methods };
 
@@ -17,7 +17,9 @@ export const verifyInternalError = ({ method }: MethodsObject) => {
   const carControllers = new CarController();
   const request = {} as Request;
   const response = {} as Response;
-  if (method === 'readOne' || method === 'update') { request.params = { id: '62571c5b062eba865817d0db' } }
+  if (method === 'readOne' || method === 'update' || method == 'delete') {
+    request.params = { id: '62571c5b062eba865817d0db'}
+  }
   response.status = sinon.stub().returns(response);
   response.json = sinon.stub();
 
@@ -44,7 +46,7 @@ export const verifyResponseSucessfully = ({ method, mockResponse, status, id = '
   const carControllers = new CarController();
   const request = {} as RequestWithBody<Car>;
   const response = {} as Response;
-  if (method === 'readOne') { request.params = { id } }
+  if (method === 'readOne' || method == 'delete') { request.params = { id } }
   if (method === 'create') { request.body = body }
   if (method === 'update') { request.params = { id }; request.body = body }
   response.status = sinon.stub().returns(response);
@@ -73,7 +75,9 @@ export const verifyNotFoundError = ({ method }: MethodsObject) => {
   const carControllers = new CarController();
   const request = {} as RequestWithBody<Car>;
   const response = {} as Response;
-  if (method === 'readOne' || method === 'update') { request.params = { id: '62571c5b062eba865817d0db' } }
+  if (method === 'readOne' || method === 'update' || method === 'delete') {
+    request.params = { id: '62571c5b062eba865817d0db' }
+  }
   response.status = sinon.stub().returns(response);
   response.json = sinon.stub();
 
