@@ -154,13 +154,13 @@ describe("Car - Camada de Controllers", () => {
     })
   
     it("Verifica se o método DELETE está retornando o status 400", async () => {
-      await carControllers.update(request, response);
+      await carControllers.delete(request, response);
       expect((response.status as sinon.SinonStub).calledWith(400)).to.be.true;
     });
   
   
     it("Verifica se o método DELETE está retornando um erro 'Id must have 24 hexadecimal characters'", async () => {
-      await carControllers.update(request, response);
+      await carControllers.delete(request, response);
       expect((response.json as sinon.SinonStub).calledWith({ error: ControllerErrors.requiredId })).to.be.true;
     });
   });
