@@ -56,4 +56,19 @@ describe('Car - Camada de Models', () => {
       expect(response).to.deep.equal(readCars[0])
     })
   })
+
+  describe('Em caso de sucesso do método UPDATE', () => {
+    before(() => {
+      sinon.stub(mongoose.Model, "findOneAndUpdate").resolves(readCars[0])
+    })
+
+    after(() => {
+      sinon.restore();
+    })
+
+    it("Verifica se o método UPDATE retorna o que era esperado", async () => {
+      const response = await carModel.update('6255f49b9c3c804d9a067e69', sucessfulCarPayload);
+      expect(response).to.deep.equal(readCars)
+    })
+  })
 })
